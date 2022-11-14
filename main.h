@@ -36,3 +36,8 @@ modeDeJeu initMenu();
 void DrawingMenu(int cursorSelection, int mode);
 
 void UpdateMenu(int *pCursorSelection, int *pMode, int *startGame);
+
+void GameDrawUpdate(modeDeJeu mode);
+
+int nbrevoisin(int x,int y);
+void premiereGen();
