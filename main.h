@@ -31,7 +31,7 @@ typedef enum cursorPossible
 
 
 
-void initMenu();
+modeDeJeu initMenu();
 
 void DrawingMenu(int cursorSelection, int mode);
 

@@ -15,12 +15,14 @@ int main(void)
 
     SetTargetFPS(60);
 
+    modeDeJeu modeJeu;
+
     // MAIN LOUPE 
-    while (!WindowShouldClose()){
+    //while (!WindowShouldClose()){
 
-
-        initMenu();
-    }
+        modeJeu = initMenu();
+        printf("MOODE = %d.\n", modeJeu);
+    //}
 
 
     // THIS IS THE END
@@ -30,38 +32,38 @@ int main(void)
 }
 
 
-void initMenu(){
+modeDeJeu initMenu(){
 
     modeDeJeu mode = GAMEOFLIFEmode;
     cursorPossible cursor = PLAY;
     bool startGame = false;
-    printf("cursor2 = %d.\n", cursor);
 
     while(!startGame){
-
+        
+        
         UpdateMenu(&cursor, &mode, &startGame);
-        printf("updatemode %d \n",mode);
         DrawingMenu(cursor, mode);
 
     }
+    return mode;
 
 }
 
 void UpdateMenu(int *pCursorSelection, int *pMode, int *startGame){
 
     if (IsKeyPressed(KEY_UP)){
-        printf("hautavant = %d.\n", *pCursorSelection);
+        //printf("hautavant = %d.\n", *pCursorSelection);
         if (*pCursorSelection > 0){
             (*pCursorSelection)--;
-            printf("hautapres = %d.\n", *pCursorSelection);
+            //printf("hautapres = %d.\n", *pCursorSelection);
         }
     }
 
     if (IsKeyPressed(KEY_DOWN)){
-        printf("basavant = %d.\n", *pCursorSelection);
+        //printf("basavant = %d.\n", *pCursorSelection);
         if (*pCursorSelection < 4){
             (*pCursorSelection)++;
-            printf("basapres = %d.\n", *pCursorSelection);
+            //printf("basapres = %d.\n", *pCursorSelection);
         }
     }
 
@@ -69,11 +71,13 @@ void UpdateMenu(int *pCursorSelection, int *pMode, int *startGame){
     if(IsKeyPressed(KEY_ENTER)){
         if(*pCursorSelection == PLAY){
             *startGame = true;
+            return;
         }
  
         if(*pCursorSelection < PLAY){
+            printf("avant%d \n", *pMode);
             *pMode = *pCursorSelection;
-
+            printf("apres%d \n", *pMode);
         }
     }
 
@@ -105,8 +109,6 @@ void DrawingMenu(int cursorSelection, int mode){
 
 
         DrawText("JOUER", GetScreenWidth()/2 - MeasureText("JOUER", 50)/2,250, 50, RED);
-
-
 
     EndDrawing();
 }
