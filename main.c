@@ -19,7 +19,7 @@ int main(void)
         //printf("mode = %d.\n",  modeJeu);
         printf("ouah");
 
-        GameDrawUpdate(mode,etat);
+        GameDrawUpdate(mode);
 
         printf("oui");
     }
@@ -50,9 +50,11 @@ void ALL_DRAWING(GameScreen screen, int mode ,int cursorSelection, int etat[nbre
     EndDrawing();
 }
 
-void GameDrawUpdate(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
+void GameDrawUpdate(modeDeJeu mode){
     bool pause = false;
     bool endGame = false;
+
+    etatsPossibles etat[nbreCarreauX][nbreCarreauY];
 
     printf("gen avant");
     premiereGen(etat, mode);

@@ -54,7 +54,7 @@ void DrawingMenu(int cursorSelection, int mode);
 
 void UpdateMenu(int *pCursorSelection, int *pMode, int *startGame);
 
-void GameDrawUpdate(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]);
+void GameDrawUpdate(modeDeJeu mode);
 
 int nbrevoisin(int x,int y, int etat[nbreCarreauX][nbreCarreauY]);
 
