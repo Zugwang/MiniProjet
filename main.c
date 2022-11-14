@@ -5,7 +5,8 @@
 
 
 static const int screenWidth = 800;
-static const int screenHeight = 450;
+static const int screenHeight = 460;
+static const int tailleCarreau = 10;
 
 
 int main(void)
@@ -21,7 +22,8 @@ int main(void)
     //while (!WindowShouldClose()){
 
         modeJeu = initMenu();
-        printf("MOODE = %d.\n", modeJeu);
+        
+
     //}
 
 
@@ -30,6 +32,61 @@ int main(void)
 
     return 0;
 }
+
+void GameDrawUpdate(modeDeJeu mode){
+
+    int nbreCarreauX = screenWidth()/tailleCarreau;
+    int nbreCarreauY = screenHeight()/tailleCarreau;
+    etatsPossibles etat[nbreCarreauX][nbreCarreauY];
+    bool pause = 0;
+    if (mode = GAMEOFLIFEmode){
+        int nbreColonie = 1;
+    }
+    if (mode = QUADLIFEmode){
+        int nbreColonie = 4;
+    }
+
+    premiereGen(etat, mode);
+
+    if(IsKeyPressed('P')){
+        pause = !pause;
+    }
+
+
+}
+
+void premiereGen(int etat[nbreCarreauX][nbreCarreauY], int nbreColonie){
+    for(int i = 0 ; i < nbreCarreau ; i ++ ){
+    for(int j = 0 ; j < nbreCarreau ; j ++ ){
+      etat[i][j] = GetRandomValue(0,mode);
+    }
+  }
+}
+
+int nbrevoisin(int x,int y, int etat[nbreCarreauX][nbreCarreauY]){
+  int result = etat[x+1][y+1]
+              +etat[x-1][y-1]
+              +etat[x-1][y+1]
+              +etat[x+1][y-1]
+              +etat[x+1][y]
+              +etat[x-1][y]
+              +etat[x][y+1]
+              +etat[x][y-1];
+  return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 modeDeJeu initMenu(){
