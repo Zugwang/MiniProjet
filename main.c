@@ -11,25 +11,18 @@ int main(void)
 
     SetTargetFPS(60);
 
-    modeDeJeu modeJeu;
 
     // MAIN LOUPE 
-    //while (!WindowShouldClose()){
+    while (!WindowShouldClose()){
 
-        modeJeu = initMenu();
+        mode = initMenu();
         //printf("mode = %d.\n",  modeJeu);
-        printf("bite");
-        
-        BeginDrawing();
+        printf("ouah");
 
-        DrawText("Doom", 45, 135, 20, RED);
-        EndDrawing();
+        GameDrawUpdate(mode,etat);
 
-        GameDrawUpdate(modeJeu);
-
-        printf("bite");
-
-    //}
+        printf("oui");
+    }
 
 
     // THIS IS THE END
@@ -38,25 +31,34 @@ int main(void)
     return 0;
 }
 
-void ALL_DRAWING(GameScreenscreen){
+void ALL_DRAWING(GameScreen screen, int mode ,int cursorSelection, int etat[nbreCarreauX][nbreCarreauY] ){
     BeginDrawing();
 
+    ClearBackground(RAYWHITE);
+
+    switch (screen)
+    {
+    case MENU:
+        DrawingMenu(cursorSelection, mode);
+        break;
     
+    case GAME:
+        DrawingGame(mode,etat);
+        break;
+    }
 
     EndDrawing();
 }
 
-void GameDrawUpdate(modeDeJeu mode){
-    printf("entree");
-    etatsPossibles etat[nbreCarreauX][nbreCarreauY];
+void GameDrawUpdate(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
     bool pause = false;
     bool endGame = false;
 
     printf("gen avant");
-    //premiereGen(etat, mode);
+    premiereGen(etat, mode);
 
     printf("draw avant");
-    DrawingGame(mode,etat);
+    ALL_DRAWING(GAME,mode,0,etat);
     printf("draw apres");
 
 
@@ -67,9 +69,9 @@ void GameDrawUpdate(modeDeJeu mode){
     // }
 
     while(!endGame){
-        DrawingGame(mode,etat);
+        ALL_DRAWING(GAME,mode,0,etat);
         WaitTime(1);
-        UpdateGame(mode,etat);
+        //UpdateGame(mode,etat);
     }
 
 
@@ -99,7 +101,6 @@ void UpdateGame(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
 }
 
 void DrawingGame(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
-    ClearBackground(RAYWHITE);
     DrawRectangle(220,300, 100,100, RED);
 
 
@@ -153,20 +154,13 @@ int nbrevoisin(int x,int y, int etat[nbreCarreauX][nbreCarreauY]){
 
 
 
-
-
-
-
-
 modeDeJeu initMenu(){
-
-    modeDeJeu mode = GAMEOFLIFEmode;
-    cursorPossible cursor = PLAY;
     bool startGame = false;
+    etatsPossibles etat[nbreCarreauX][nbreCarreauY];
 
     while(!startGame){
         UpdateMenu(&cursor, &mode, &startGame);
-        DrawingMenu(cursor, mode);
+        ALL_DRAWING(MENU,mode,cursor,etat);
     }
     return mode;
 }
@@ -208,7 +202,7 @@ void UpdateMenu(int *pCursorSelection, int *pMode, int *startGame){
 }
 
 void DrawingMenu(int cursorSelection, int mode){
-    BeginDrawing();
+    
         ClearBackground(RAYWHITE);
 
         for (int i = 0 ; i < PLAY ; i++){
@@ -234,5 +228,5 @@ void DrawingMenu(int cursorSelection, int mode){
 
         DrawText("JOUER", GetScreenWidth()/2 - MeasureText("JOUER", 50)/2,250, 50, RED);
 
-    EndDrawing();
+
 }
