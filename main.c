@@ -4,15 +4,10 @@
 #include "raylib.h"
 
 
-static const int screenWidth = 800;
-static const int screenHeight = 460;
-static const int tailleCarreau = 10;
-
-
 int main(void)
 {
     // INIT 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - keyboard input");
+    InitWindow(screenWidth, screenHeight, "Jeu de la vie");
 
     SetTargetFPS(60);
 
@@ -22,7 +17,17 @@ int main(void)
     //while (!WindowShouldClose()){
 
         modeJeu = initMenu();
+        //printf("mode = %d.\n",  modeJeu);
+        printf("bite");
         
+        BeginDrawing();
+
+        DrawText("Doom", 45, 135, 20, RED);
+        EndDrawing();
+
+        GameDrawUpdate(modeJeu);
+
+        printf("bite");
 
     //}
 
@@ -33,34 +38,98 @@ int main(void)
     return 0;
 }
 
+void ALL_DRAWING(GameScreenscreen){
+    BeginDrawing();
+
+    
+
+    EndDrawing();
+}
+
 void GameDrawUpdate(modeDeJeu mode){
-
-    int nbreCarreauX = screenWidth()/tailleCarreau;
-    int nbreCarreauY = screenHeight()/tailleCarreau;
+    printf("entree");
     etatsPossibles etat[nbreCarreauX][nbreCarreauY];
-    bool pause = 0;
-    if (mode = GAMEOFLIFEmode){
-        int nbreColonie = 1;
-    }
-    if (mode = QUADLIFEmode){
-        int nbreColonie = 4;
-    }
+    bool pause = false;
+    bool endGame = false;
 
-    premiereGen(etat, mode);
+    printf("gen avant");
+    //premiereGen(etat, mode);
 
-    if(IsKeyPressed('P')){
-        pause = !pause;
+    printf("draw avant");
+    DrawingGame(mode,etat);
+    printf("draw apres");
+
+
+
+    // if(IsKeyPressed('P')){
+    //     pause = !pause;
+    //     DrawText("PAUSE", GetScreenWidth()/2 - MeasureText("PAUSE", 50)/2,250, 50, RED);
+    // }
+
+    while(!endGame){
+        DrawingGame(mode,etat);
+        WaitTime(1);
+        UpdateGame(mode,etat);
     }
 
 
 }
 
-void premiereGen(int etat[nbreCarreauX][nbreCarreauY], int nbreColonie){
-    for(int i = 0 ; i < nbreCarreau ; i ++ ){
-    for(int j = 0 ; j < nbreCarreau ; j ++ ){
-      etat[i][j] = GetRandomValue(0,mode);
+
+void UpdateGame(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
+    etatsPossibles etat_nv[nbreCarreauX][nbreCarreauY];
+
+    for(int i = 0 ; i < nbreCarreauX ; i ++ ){
+        for(int j = 0 ; j < nbreCarreauY ; j ++ ){
+            if(nbrevoisin(i,j,etat) == 2){
+                etat_nv[i][j] = etat[i][j];
+            }else if(nbrevoisin(i,j,etat) == 3) {
+                etat_nv[i][j] = VIVANT1;
+            }else{
+                etat_nv[i][j] = MORT;
+            }
+        }
     }
-  }
+
+    for(int i = 0 ; i < nbreCarreauX ; i ++ ){
+        for(int j = 0 ; j < nbreCarreauY ; j ++ ){
+            etat[i][j] = etat_nv[i][j];
+        }
+    }
+}
+
+void DrawingGame(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
+    ClearBackground(RAYWHITE);
+    DrawRectangle(220,300, 100,100, RED);
+
+
+    for(int i = 0 ; i < nbreCarreauX ; i ++ ){
+        for(int j = 0 ; j < nbreCarreauY ; j ++ ){
+            Color caseColor = RAYWHITE;
+            if(etat[i][j] == VIVANT1) {Color caseColor = GREEN;}
+            if(etat[i][j] == VIVANT2) {Color caseColor = BLUE;}
+            if(etat[i][j] == VIVANT3) {Color caseColor = RED;}
+            if(etat[i][j] == VIVANT4) {Color caseColor = YELLOW;}
+
+            DrawRectangle(i*tailleCarreau, j*tailleCarreau, tailleCarreau, tailleCarreau, caseColor);
+        }
+    } 
+}
+
+
+void premiereGen(int etat[nbreCarreauX][nbreCarreauY], modeDeJeu mode){
+    int nbreColonie = 1;
+
+    if (mode == QUADLIFEmode){
+        nbreColonie = 4;
+    }
+
+
+    for(int i = 0 ; i < nbreCarreauX ; i ++ ){
+        for(int j = 0 ; j < nbreCarreauY ; j ++ ){
+            etat[i][j] = GetRandomValue(0,nbreColonie);
+        }
+    }
 }
 
 int nbrevoisin(int x,int y, int etat[nbreCarreauX][nbreCarreauY]){
@@ -96,14 +165,10 @@ modeDeJeu initMenu(){
     bool startGame = false;
 
     while(!startGame){
-        
-        
         UpdateMenu(&cursor, &mode, &startGame);
         DrawingMenu(cursor, mode);
-
     }
     return mode;
-
 }
 
 void UpdateMenu(int *pCursorSelection, int *pMode, int *startGame){
@@ -126,8 +191,10 @@ void UpdateMenu(int *pCursorSelection, int *pMode, int *startGame){
 
 
     if(IsKeyPressed(KEY_ENTER)){
-        if(*pCursorSelection == PLAY){
+        if((*pCursorSelection) == PLAY){
+            printf("espoir");
             *startGame = true;
+            printf("espoir");
             return;
         }
  
