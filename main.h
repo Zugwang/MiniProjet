@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <string.h>
 
 typedef enum etatsPossibles
 {
@@ -15,7 +16,7 @@ typedef enum modeDeJeu
 {
     GAMEOFLIFEmode,
     QUADLIFEmode,
-    DOOMmde
+    DOOMmode
 } modeDeJeu;
 
 typedef enum cursorPossible
@@ -34,4 +35,4 @@ void initMenu();
 
 void DrawingMenu(int cursorSelection, int mode);
 
-void UpdateMenu
+void UpdateMenu(int *pCursorSelection, int *pMode, int *startGame);
