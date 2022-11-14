@@ -17,13 +17,12 @@ int main(void)
 
         mode = initMenu();
         //printf("mode = %d.\n",  modeJeu);
-        printf("ouah");
+        //printf("ouah");
 
         GameDrawUpdate(mode);
 
-        printf("oui");
+        //printf("oui");
     }
-
 
     // THIS IS THE END
     CloseWindow();        // Close window and OpenGL context
@@ -31,6 +30,9 @@ int main(void)
     return 0;
 }
 
+//Derniere fonction ajoutee
+//A pour but d'etre un screen manager calque sur le modele en ligne de raylib
+//Ne fonctionne pas pour autant ce serait trop beau
 void ALL_DRAWING(GameScreen screen, int mode ,int cursorSelection, int etat[nbreCarreauX][nbreCarreauY] ){
     BeginDrawing();
 
@@ -50,18 +52,21 @@ void ALL_DRAWING(GameScreen screen, int mode ,int cursorSelection, int etat[nbre
     EndDrawing();
 }
 
+//Fonction gérant l'update ainsi que l'affichage durant une partie
+//C'est apres premiereGen que le programme se comporte de manière incompréhensible
+//beaucoup de tests ont été fait dans cette section sans succès
 void GameDrawUpdate(modeDeJeu mode){
     bool pause = false;
     bool endGame = false;
 
     etatsPossibles etat[nbreCarreauX][nbreCarreauY];
 
-    printf("gen avant");
+    //printf("gen avant");
     premiereGen(etat, mode);
 
-    printf("draw avant");
+    //printf("draw avant");
     ALL_DRAWING(GAME,mode,0,etat);
-    printf("draw apres");
+    //printf("draw apres");
 
 
 
@@ -79,7 +84,9 @@ void GameDrawUpdate(modeDeJeu mode){
 
 }
 
-
+//Fonction permettant de calculer la matrice d'etat une génération suivante en fonction du mode de jeu
+//N'a pas été testé mais son fonctionnement est calqué sur mon travail anterieur
+// l'implementation de quadLife n'a cependant pas été faite
 void UpdateGame(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
     etatsPossibles etat_nv[nbreCarreauX][nbreCarreauY];
 
@@ -102,9 +109,11 @@ void UpdateGame(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
     }
 }
 
-void DrawingGame(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
-    DrawRectangle(220,300, 100,100, RED);
 
+//Fonction d'affichage durant le jeu 
+//Non testé et le programme ne semble pas arriver jusqu'à ici
+void DrawingGame(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
+    //DrawRectangle(220,300, 100,100, RED);
 
     for(int i = 0 ; i < nbreCarreauX ; i ++ ){
         for(int j = 0 ; j < nbreCarreauY ; j ++ ){
@@ -119,7 +128,8 @@ void DrawingGame(modeDeJeu mode,int etat[nbreCarreauX][nbreCarreauY]){
     } 
 }
 
-
+//Generation aleatoire des premiers
+// Fonctionnelle
 void premiereGen(int etat[nbreCarreauX][nbreCarreauY], modeDeJeu mode){
     int nbreColonie = 1;
 
@@ -135,6 +145,9 @@ void premiereGen(int etat[nbreCarreauX][nbreCarreauY], modeDeJeu mode){
     }
 }
 
+//Calcul le nombre de voisins vivants
+//Des effets de bord sont a corriger
+// NON COMPATIBLE AVEC QUADLIFE
 int nbrevoisin(int x,int y, int etat[nbreCarreauX][nbreCarreauY]){
   int result = etat[x+1][y+1]
               +etat[x-1][y-1]
@@ -148,14 +161,8 @@ int nbrevoisin(int x,int y, int etat[nbreCarreauX][nbreCarreauY]){
 }
 
 
-
-
-
-
-
-
-
-
+//Selection du mode de jeu du menu
+//FONCTIONNELLE
 modeDeJeu initMenu(){
     bool startGame = false;
     etatsPossibles etat[nbreCarreauX][nbreCarreauY];
@@ -167,6 +174,8 @@ modeDeJeu initMenu(){
     return mode;
 }
 
+//update du menu 
+//FONCTIONNELLE
 void UpdateMenu(int *pCursorSelection, int *pMode, int *startGame){
 
     if (IsKeyPressed(KEY_UP)){
@@ -203,6 +212,8 @@ void UpdateMenu(int *pCursorSelection, int *pMode, int *startGame){
 
 }
 
+//affichage du menu
+//fonctionelle
 void DrawingMenu(int cursorSelection, int mode){
     
         ClearBackground(RAYWHITE);
@@ -230,5 +241,9 @@ void DrawingMenu(int cursorSelection, int mode){
 
         DrawText("JOUER", GetScreenWidth()/2 - MeasureText("JOUER", 50)/2,250, 50, RED);
 
-
 }
+
+
+
+//c'est la fin
+//
